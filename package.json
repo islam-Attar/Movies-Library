@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/islam-Attar/Movies-Library#readme",
   "dependencies": {
+    "axios": "^0.25.0",
     "cors": "^2.8.5",
     "express": "^4.17.2"
   }
