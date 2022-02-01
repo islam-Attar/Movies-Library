@@ -99,11 +99,3 @@ function welcomeToFavoriteHandler(req, res) {
   return res.status(200).send("Welcome to Favorite Page");
 }
 
-
-
-
-//.env content
-// {
-// API_KEY = 89c2b690ce2221998bb88245cb065689
-// PORT = 3333
-// }
