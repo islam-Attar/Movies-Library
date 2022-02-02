@@ -12,7 +12,7 @@
 
 step1: CTRL + SHIFT + ` to make sure we don't have any errors
 step2: go to Postman and run http://localhost:3333/(choose whatever path you want)
-step3: example: http://localhost:3333/trending then press on **Send**
+step3: example: http://localhost:3333/favorite then press on **Send**
 step4: you will see the result in the window below "Body" then choose Pretty
 
 ## Project Features
