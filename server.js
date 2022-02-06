@@ -3,13 +3,25 @@
 const express = require("express");
 const axios = require("axios");
 const pg = require("pg");
+const app = express();
+const dotenv = require("dotenv");
 
 // const client = new pg.Client(DATABASE_URL);
 
+dotenv.config();
+const DATABASE_URL = process.env.DATABASE_URL;
+const PORT = process.env.PORT;
 
-const app = express();
-const dotenv = require("dotenv");
+const client = new pg.Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+const API_KEY = process.env.API_KEY;
+
+
+
 app.use(express.json());
+
 
 
 function Movies(id, title, release_date, poster_path, overview) {
@@ -20,20 +32,12 @@ function Movies(id, title, release_date, poster_path, overview) {
   this.overview = overview;
 }
 
-dotenv.config();
-const pg = require("pg");
-const DATABASE_URL = process.env.DATABASE_URL;
-const client = new pg.Client(DATABASE_URL);
-app.use(express.json());
 
-const API_KEY = process.env.API_KEY;
-const PORT = process.env.PORT;
-const DATABASE_URL = process.env.DATABASE_URL;
 
-const client = new pg.Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
-});
+
+
+
+
 
 
 
