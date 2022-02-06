@@ -3,12 +3,10 @@
 const express = require("express");
 const axios = require("axios");
 const pg = require("pg");
-const DATABASE_URL = process.env.DATABASE_URL;
+
 // const client = new pg.Client(DATABASE_URL);
-const client = new pg.Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
-});
+
+
 const app = express();
 const dotenv = require("dotenv");
 app.use(express.json());
@@ -26,6 +24,12 @@ dotenv.config();
 
 const API_KEY = process.env.API_KEY;
 const PORT = process.env.PORT;
+const DATABASE_URL = process.env.DATABASE_URL;
+
+const client = new pg.Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 
 // const jsonData = require("./Movie Data/data.json");
 
@@ -34,7 +38,10 @@ const PORT = process.env.PORT;
 
 
 
-// app.get('/', getMoviesHandler);
+app.get('/', (req, res) =>{
+return res.status(200).send("Hello World");
+})
+
 app.get("/favorite", welcomeToFavoriteHandler);
 app.get("/trending", trendingHandler);
 app.get("/search", searchHandler);
@@ -225,6 +232,7 @@ function getFavMovieHandler(req, res) {
 }
 
 // function  getMoviesHandler(req, res){
+
 
 //     let movies = new Movies(jsonData.title, jsonData.poster_path, jsonData.overview); ;
 
