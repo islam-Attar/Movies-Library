@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS favMovies;
+DROP TABLE IF EXISTS myMovies;
 
-CREATE TABLE IF NOT EXISTS favMovies(
+CREATE TABLE IF NOT EXISTS myMovies(
     id SERIAL PRIMARY KEY,
     title VARCHAR(255),
     release_date VARCHAR(1000),
