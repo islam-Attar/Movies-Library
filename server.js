@@ -31,10 +31,17 @@ const PORT = process.env.PORT;
 // app.get('/favorite', welcomeToFavoriteHandler);
 app.get("/trending", trendingHandler);
 app.get("/search", searchHandler);
+
 app.post("/addMovies", addMoviesHandler);
 app.get("/getMovies", getFavMovieHandler);
 
-app.use(errorHandler);
+app.get("/getMovie/:id", getFavMovieIdHandler);
+app.put("/UPDATE/:id", updateFavMovieHandler);
+app.delete("/DELETE/:id", deleteFavMovieHandler);
+
+
+
+// app.use(errorHandler);
 app.use("*", notFoundHandler);
 
 function notFoundHandler(req, res) {
@@ -73,11 +80,12 @@ function trendingHandler(req, res) {
       errorHandler(error, req, res);
     });
 }
+
 function addMoviesHandler(req, res)
 {
   let movie = req.body
 
-  const sql = `INSERT INTO favMovies(title, release_date, poster_path, overview, comments) VALUES($1, $2, $3, $4, $5) RETURNING * ;`
+  const sql = `INSERT INTO mymovies(title, release_date, poster_path, overview, comments) VALUES($1, $2, $3, $4, $5) RETURNING * ;`
  
 
   let values = [movie.title, movie.release_date, movie.poster_path, movie.overview,movie.comments]
@@ -89,16 +97,64 @@ function addMoviesHandler(req, res)
       errorHandler(error, req, res);
   })
 }
+function updateFavMovieHandler(req, res)
+{
+  const id = req.params.id;
+  const movie = req.body;
 
+  const sql = `UPDATE mymovies SET title = $1, release_date = $2, poster_path = $3, overview = $4, comments = $5 WHERE id=${id} RETURNING *;`;
+  const values = [movie.title, movie.release_date, movie.poster_path, movie.overview, movie.comments];
+
+  client.query(sql,values).then(data => {
+      
+      return res.status(200).json(data.rows);
+  }).catch(error => {
+      errorHandler(error, req, res);
+  })
+
+}
 
 function getFavMovieHandler(req, res)
 {
-  const sql = `SELECT * FROM favMovies`;
+  const sql = `SELECT * FROM mymovies`;
   client.query(sql).then(data => {
+    console.log(data.rows);
       return res.status(200).json(data.rows);
   }).catch(error => {
       errorHandler(error, req,res);
   })
+}
+
+function deleteFavMovieHandler(req, res){
+  const id = req.params.id;
+
+  const sql = `DELETE FROM mymovies WHERE id=${id};`
+
+  client.query(sql).then(() => {
+      return res.status(204).json([]);
+  }).catch(error => {
+      errorHandler(error, req, res);
+  })
+}
+
+
+function getFavMovieIdHandler(req, res)
+{
+
+  // console.log(res);
+  
+    const id = req.params.id;
+    console.log(id);
+    const sql = `SELECT * FROM mymovies WHERE id=${id};`
+
+    client.query(sql).then(data => {
+        console.log(data.rows);
+        res.status(200).json(data.rows);
+    })
+    .catch(error => {
+        console.log(error);
+        errorHandler(error, req, res);
+    })
 }
 
 function searchHandler(req, res) {
