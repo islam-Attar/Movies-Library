@@ -7,15 +7,14 @@
 ![Screenshot](WRRC.png)
 
 ## Overview
-
+application that has libraries to view movies
 ## Getting Started
 
-step1: CTRL + SHIFT + ` to make sure we don't have any errors
-step2: go to Postman and run http://localhost:3333/(choose whatever path you want)
-step3: example: http://localhost:3333/trending then press on **Send**
-step4: you will see the result in the window below "Body" then choose Pretty
+
+use postman and insert http://localhost:4444/getMovies or http://localhost:4444/addMovie
+
 
 ## Project Features
 features that my project provides are:
-1) you can see what movies are trending
-2) you can use search option to filter them to whatever movies type/name you prefer
+1) you can add movies 
+2) you can get movies
