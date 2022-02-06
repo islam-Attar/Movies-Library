@@ -246,7 +246,7 @@ function getFavMovieHandler(req, res) {
 
 client.connect().then(() => {
   app.listen(PORT, () => {
-    console.log(`Listen to port ${PORT}`);
+    console.log("Listen to port 3000");
   });
 });
 
