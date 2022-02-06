@@ -31,10 +31,6 @@ const client = new pg.Client({
   ssl: { rejectUnauthorized: false }
 });
 
-// const jsonData = require("./Movie Data/data.json");
-
-
-
 
 
 
