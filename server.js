@@ -21,6 +21,10 @@ function Movies(id, title, release_date, poster_path, overview) {
 }
 
 dotenv.config();
+const pg = require("pg");
+const DATABASE_URL = process.env.DATABASE_URL;
+const client = new pg.Client(DATABASE_URL);
+app.use(express.json());
 
 const API_KEY = process.env.API_KEY;
 const PORT = process.env.PORT;
@@ -241,3 +245,4 @@ client.connect().then(() => {
     console.log(`Listen to port ${PORT}`);
   });
 });
+
