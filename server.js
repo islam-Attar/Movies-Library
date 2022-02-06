@@ -19,6 +19,10 @@ function Movies(id, title, release_date, poster_path, overview) {
 }
 
 dotenv.config();
+const pg = require("pg");
+const DATABASE_URL = process.env.DATABASE_URL;
+const client = new pg.Client(DATABASE_URL);
+app.use(express.json());
 
 const API_KEY = process.env.API_KEY;
 const PORT = process.env.PORT;
@@ -27,11 +31,17 @@ const PORT = process.env.PORT;
 
 
 
+
+
+
 // app.get('/', getMoviesHandler);
-// app.get('/favorite', welcomeToFavoriteHandler);
+app.get("/favorite", welcomeToFavoriteHandler);
 app.get("/trending", trendingHandler);
 app.get("/search", searchHandler);
 app.post("/addMovies", addMoviesHandler);
+app.get("/getMovies", getFavMovieHandler);
+
+app.post("/addMovie", addMovieHandler);
 app.get("/getMovies", getFavMovieHandler);
 
 app.use(errorHandler);
@@ -48,6 +58,10 @@ function errorHandler(error, req, res) {
   };
 
   res.status(500).send(err);
+}
+
+function welcomeToFavoriteHandler(req, res) {
+  return res.status(200).send("Welcome to Favorite Page");
 }
 
 function trendingHandler(req, res) {
@@ -120,6 +134,41 @@ function searchHandler(req, res) {
     });
 }
 
+function addMovieHandler(req, res) {
+  let movie = req.body;
+
+  const sql = `INSERT INTO myMovies(title, release_date, poster_path, overview, comments) VALUES($1, $2, $3, $4, $5) RETURNING * ;`;
+
+  let values = [
+    movie.title,
+    movie.release_date,
+    movie.poster_path,
+    movie.overview,
+    movie.comments,
+  ];
+  console.log(values);
+  client
+    .query(sql, values)
+    .then((data) => {
+      return res.status(201).json(data.rows);
+    })
+    .catch((error) => {
+      errorHandler(error, req, res);
+    });
+}
+
+function getFavMovieHandler(req, res) {
+  const sql = `SELECT * FROM myMovies`;
+  client
+    .query(sql)
+    .then((data) => {
+      return res.status(200).json(data.rows);
+    })
+    .catch((error) => {
+      errorHandler(error, req, res);
+    });
+}
+
 // function  getMoviesHandler(req, res){
 
 //     let movies = new Movies(jsonData.title, jsonData.poster_path, jsonData.overview); ;
@@ -127,13 +176,10 @@ function searchHandler(req, res) {
 //     return res.status(200).json(movies);
 // };
 
-function welcomeToFavoriteHandler(req, res) {
-  return res.status(200).send("Welcome to Favorite Page");
-}
 
 client.connect().then(() => {
-    
   app.listen(PORT, () => {
-      console.log(`Listen to port: ${PORT}`);
+    console.log(`Listen to port ${PORT}`);
   });
 });
+
