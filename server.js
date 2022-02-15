@@ -3,9 +3,8 @@
 const express = require("express");
 const axios = require("axios");
 const pg = require("pg");
-
 const cors = require('cors');
-app.use(cors());
+
 
 // const client = new pg.Client(DATABASE_URL);
 
@@ -13,6 +12,7 @@ app.use(cors());
 const app = express();
 const dotenv = require("dotenv");
 app.use(express.json());
+app.use(cors());
 
 
 function Movies(id, title, release_date, poster_path, overview) {
