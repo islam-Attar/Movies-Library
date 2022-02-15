@@ -4,6 +4,9 @@ const express = require("express");
 const axios = require("axios");
 const pg = require("pg");
 
+const cors = require('cors');
+app.use(cors());
+
 // const client = new pg.Client(DATABASE_URL);
 
 
@@ -89,7 +92,8 @@ function trendingHandler(req, res) {
           element.title,
           element.release_date,
           element.poster_path,
-          element.overview
+          element.overview,
+          element.comments
         );
         allMovies.push(oneMovie);
       });
@@ -107,7 +111,7 @@ function addMoviesHandler(req, res)
   const sql = `INSERT INTO mymovies(title, release_date, poster_path, overview, comments) VALUES($1, $2, $3, $4, $5) RETURNING * ;`
  
 
-  let values = [movie.title, movie.release_date, movie.poster_path, movie.overview,movie.comments]
+  let values = [movie.title, movie.release_date, movie.poster_path, movie.overview, movie.comments]
   
   client.query(sql, values).then((data) => {
      
